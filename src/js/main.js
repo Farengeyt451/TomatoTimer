@@ -1,5 +1,7 @@
+// Basic timers
 let countdownWork;
 let countdownRest;
+// Flag for pause timer
 let pause = false;
 
 const timerDisplay = document.querySelector(".display-time-left");
@@ -10,9 +12,9 @@ const inputWorkTime = document.querySelector("input[name='work']");
 const inputRestTime = document.querySelector("input[name='rest']");
 const body = document.querySelector("body");
 
+// Check for positive numbers in inputs
 function checkData(val) {
 	if (val < 0) {
-		console.log("<0");
 		inputWorkTime.value= "0";
 		return 0;
 	} else {
@@ -20,6 +22,18 @@ function checkData(val) {
 	}
 }
 
+// Apply a style based on the timer
+function applyStyle(timer) {
+	if (timer === "work") {
+		body.style.background = "linear-gradient(45deg, #42A5F5 0%, #478ED1 50%, #0D47A1 100%)";
+		endTime.textContent = "Work Time";
+	} else {
+		body.style.background = "linear-gradient(to top, #56AB2F, #A8E063)";
+		endTime.textContent = "Rest Time";
+	}
+}
+
+// Start session length timer
 function timerWorkTime() {
 	let secondsWork = checkData(inputWorkTime.value * 60);
 	const now = Date.now();
@@ -28,8 +42,7 @@ function timerWorkTime() {
 	clearInterval(countdownWork);
 	clearInterval(countdownRest);
 	displayTimeLeft(secondsWork);
-	body.style.background = "linear-gradient(45deg, #42A5F5 0%, #478ED1 50%, #0D47A1 100%)";
-	endTime.textContent = "Work Time";
+	applyStyle("work");
 	countdownWork = setInterval(() => {
 		if (!pause) {
 			secondsLeft--;
@@ -44,16 +57,16 @@ function timerWorkTime() {
 
 }
 
+// Start break length timer
 function timerRestTime() {
-	const secondsRest = inputRestTime.value * 60;
+	const secondsRest = checkData(inputRestTime.value * 60);
 	const now = Date.now();
 	const then = now + secondsRest * 1000;
 	let secondsLeft = Math.round((then - now) / 1000);
 	clearInterval(countdownWork);
 	clearInterval(countdownRest);
 	displayTimeLeft(secondsRest);
-	body.style.background = "linear-gradient(to top, #56AB2F, #A8E063)";
-	endTime.textContent = "Rest Time";
+	applyStyle("rest");
 	countdownRest = setInterval(() => {
 		if (!pause) {
 			secondsLeft--;
@@ -67,6 +80,7 @@ function timerRestTime() {
 	}, 1000);
 }
 
+// Pause timers
 function pauseTimers() {
 	pause = !pause;
 	if (pause) {
@@ -76,6 +90,7 @@ function pauseTimers() {
 	}
 }
 
+// Show timer values
 function displayTimeLeft(seconds) {
 	const minutes = Math.floor(seconds / 60);
 	const remainderSeconds = seconds % 60;
@@ -85,42 +100,11 @@ function displayTimeLeft(seconds) {
 }
 
 workTimeBtn.addEventListener("click", (e) => {
-	e.preventDefault();
 	timerWorkTime();
 	pause = true;
 	pauseTimers();
 });
 
 pauseTimeBtn.addEventListener("click", (e) => {
-	e.preventDefault();
 	pauseTimers();
 });
-
-	let counted = 25;
-inputWorkTime.addEventListener("wheel", debounce(changeMins, 100));
-
-function changeMins(e){
-	console.log(e);
-	if (e.deltaY < 0) {
-		counted++;
-	} else {
-		counted--;
-	}
-	inputWorkTime.value = counted;
-	console.log(counted);
-}
-
-function debounce(func, wait, immediate) {
-	var timeout;
-	return function() {
-		var context = this, args = arguments;
-		var later = function() {
-			timeout = null;
-			if (!immediate) func.apply(context, args);
-		};
-		var callNow = immediate && !timeout;
-		clearTimeout(timeout);
-		timeout = setTimeout(later, wait);
-		if (callNow) func.apply(context, args);
-	};
-};

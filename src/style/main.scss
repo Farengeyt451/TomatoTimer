@@ -34,10 +34,10 @@ body {
 		padding-left: 15px;
 		background-color: #DDD;
 		box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.05);
-		&[name="rest"] {
+		&[name="work"] {
 			color: #42A5F5;
 		}
-		&[name="work"] {
+		&[name="rest"] {
 			color: #56AB2F;
 		}
 	}
@@ -96,7 +96,9 @@ body {
 		margin: 20px 10px;
 		border: none;
 		border-radius: 6px;
-		font-size: 18px;
+		font-size: 14px;
+		text-transform: uppercase;
+		letter-spacing: 2px;
 		color: #444;
 		transition: all 0.3s ease;
 		&:hover {
