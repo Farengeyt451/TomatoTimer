@@ -4,6 +4,7 @@ let countdownRest;
 // Flag for pause timers
 let pause = false;
 
+// Elements
 const timerDisplay = document.querySelector(".display-time-left");
 const endTime = document.querySelector(".display-end-time");
 const workTimeBtn = document.querySelector("button[name='start-timer']");
@@ -11,6 +12,10 @@ const pauseTimeBtn = document.querySelector("button[name='pause-timer']");
 const inputWorkTime = document.querySelector("input[name='work']");
 const inputRestTime = document.querySelector("input[name='rest']");
 const body = document.querySelector("body");
+
+// Audio files
+const audioWorkTimer = new Audio("../sounds/audio-1.wav");
+const audioRestTimer = new Audio("../sounds/audio-2.wav");
 
 // Start session length timer
 function timerWorkTime() {
@@ -86,9 +91,13 @@ function applyStyle(timer) {
 	if (timer === "work") {
 		body.style.background = "linear-gradient(45deg, #42A5F5 0%, #478ED1 50%, #0D47A1 100%)";
 		endTime.textContent = "Work Time";
+		audioWorkTimer.currenTime = 0;
+		audioWorkTimer.play();
 	} else {
 		body.style.background = "linear-gradient(to top, #56AB2F, #A8E063)";
 		endTime.textContent = "Rest Time";
+		audioRestTimer.currenTime = 0;
+		audioRestTimer.play();
 	}
 }
 
