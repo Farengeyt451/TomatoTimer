@@ -1,7 +1,7 @@
 // Basic timers
 let countdownWork;
 let countdownRest;
-// Flag for pause timer
+// Flag for pause timers
 let pause = false;
 
 const timerDisplay = document.querySelector(".display-time-left");

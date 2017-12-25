@@ -1,7 +1,7 @@
 {
-	"name": "JS30-29",
+	"name": "TomatoTimer",
 	"version": "1.0.0",
-	"description": "Countdown Timer",
+	"description": "Tomato Timer",
 	"main": "index.js",
 	"author": "Alexander Kislov",
 	"license": "ISC",
