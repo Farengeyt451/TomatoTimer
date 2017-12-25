@@ -12,70 +12,42 @@ const inputWorkTime = document.querySelector("input[name='work']");
 const inputRestTime = document.querySelector("input[name='rest']");
 const body = document.querySelector("body");
 
-// Check for positive numbers in inputs
-function checkData(val) {
-	if (val < 0) {
-		inputWorkTime.value= "0";
-		return 0;
-	} else {
-		return val;
-	}
-}
-
-// Apply a style based on the timer
-function applyStyle(timer) {
-	if (timer === "work") {
-		body.style.background = "linear-gradient(45deg, #42A5F5 0%, #478ED1 50%, #0D47A1 100%)";
-		endTime.textContent = "Work Time";
-	} else {
-		body.style.background = "linear-gradient(to top, #56AB2F, #A8E063)";
-		endTime.textContent = "Rest Time";
-	}
-}
-
 // Start session length timer
 function timerWorkTime() {
 	let secondsWork = checkData(inputWorkTime.value * 60);
-	const now = Date.now();
-	const then = now + secondsWork * 1000;
-	let secondsLeft = Math.round((then - now) / 1000);
 	clearInterval(countdownWork);
 	clearInterval(countdownRest);
 	displayTimeLeft(secondsWork);
 	applyStyle("work");
 	countdownWork = setInterval(() => {
 		if (!pause) {
-			secondsLeft--;
-			if (secondsLeft < 0) {
+			secondsWork--;
+			if (secondsWork < 0) {
 				timerRestTime();
 				clearInterval(countdownWork);
 				return;
 			}
-			displayTimeLeft(secondsLeft);
+			displayTimeLeft(secondsWork);
 		}
 	}, 1000);
-
 }
 
 // Start break length timer
 function timerRestTime() {
-	const secondsRest = checkData(inputRestTime.value * 60);
-	const now = Date.now();
-	const then = now + secondsRest * 1000;
-	let secondsLeft = Math.round((then - now) / 1000);
+	let secondsRest = checkData(inputRestTime.value * 60);
 	clearInterval(countdownWork);
 	clearInterval(countdownRest);
 	displayTimeLeft(secondsRest);
 	applyStyle("rest");
 	countdownRest = setInterval(() => {
-		if (!pause) {
-			secondsLeft--;
-			if (secondsLeft < 0) {
+		if (!pause ) {
+			secondsRest--;
+			if (secondsRest < 0) {
 				timerWorkTime();
 				clearInterval(countdownRest);
 				return;
 			}
-			displayTimeLeft(secondsLeft);
+			displayTimeLeft(secondsRest);
 		}
 	}, 1000);
 }
@@ -99,12 +71,35 @@ function displayTimeLeft(seconds) {
 	document.title = display;
 }
 
-workTimeBtn.addEventListener("click", (e) => {
-	timerWorkTime();
-	pause = true;
-	pauseTimers();
+// Check for positive numbers in inputs
+function checkData(val) {
+	if (val < 0) {
+		inputWorkTime.value= "0";
+		return 0;
+	} else {
+		return val;
+	}
+}
+
+// Apply a style based on the timer
+function applyStyle(timer) {
+	if (timer === "work") {
+		body.style.background = "linear-gradient(45deg, #42A5F5 0%, #478ED1 50%, #0D47A1 100%)";
+		endTime.textContent = "Work Time";
+	} else {
+		body.style.background = "linear-gradient(to top, #56AB2F, #A8E063)";
+		endTime.textContent = "Rest Time";
+	}
+}
+
+workTimeBtn.addEventListener("click", () => {
+	if (inputWorkTime.value !== "0" || inputRestTime.value !== "0") {
+		timerWorkTime();
+		pause = true;
+		pauseTimers();
+	}
 });
 
-pauseTimeBtn.addEventListener("click", (e) => {
+pauseTimeBtn.addEventListener("click", () => {
 	pauseTimers();
 });

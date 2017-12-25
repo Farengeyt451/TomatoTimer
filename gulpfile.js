@@ -16,6 +16,7 @@ const rigger = require("gulp-rigger");
 const sass = require("gulp-sass");
 const sourcemaps = require("gulp-sourcemaps");
 const uglify = require("gulp-uglify");
+const babel = require("gulp-babel");
 
 // Создаем переменную окружения NODE_ENV
 const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == "development";
@@ -27,28 +28,25 @@ var path = {
 		js: "build/js/",
 		css: "build/css/",
 		img: "build/img/",
-		fonts: "build/fonts/",
-		sounds: "build/sounds/"
+		fonts: "build/fonts/"
 	},
 	production: {				// Указываем куда перемещать готовые после сборки файлы (production)
 		html: "production/",
 		js: "production/js/",
 		css: "production/css/",
 		img: "production/img/",
-		fonts: "production/fonts/",
-		sounds: "build/sounds/"
+		fonts: "production/fonts/"
 	},
 	src: {						// Указываем пути откуда брать исходники
-		htmlpug: "src/index.pug",
-		html: "src/*.html",
+		html: "src/index.pug",
+		// html: "src/**/*.pug",
 		js: "src/js/*.js",
 		style: "src/style/main.scss",
 		img: "src/img/**/*.*",
 		fonts: "src/fonts/**/*.*"
 	},
 	watch: {					// Указываем за изменением каких файлов наблюдать
-		htmlpug: "src/**/*.pug",
-		html: "src/**/*.html",
+		html: "src/**/*.pug",
 		js: "src/js/**/*.js",
 		style: "src/style/**/*.scss",
 		img: "src/img/**/*.*",
@@ -59,9 +57,8 @@ var path = {
 		production: "production/*"
 	},
 	copy: {
-		sounds: "src/sounds/*.wav"
 		// js: "node_modules/jquery/dist/jquery.min.js",
-		// json: "src/manifest/*.json"
+		json: "src/manifest/*.json"
 		// css: "node_modules/bootstrap/dist/css/bootstrap.min.css"
 	}
 };
@@ -86,22 +83,11 @@ var prodconf = {
 
 // Создаем задание скопировать js и css
 gulp.task("copy", function () {
-	return gulp.src(path.copy.sounds)
-		// .pipe(gulpIf(isDevelopment, gulp.dest(path.build.html), gulp.dest(path.production.html)))
+	return gulp.src(path.copy.json)
+		// .pipe(gulpIf(isDevelopment, gulp.dest(path.build.js), gulp.dest(path.production.js)))
 		// .pipe(gulp.src(path.copy.css))
 		// .pipe(gulpIf(isDevelopment, gulp.dest(path.build.css), gulp.dest(path.production.css)))
 		// .pipe(gulp.src(path.copy.json))
-		.pipe(gulpIf(isDevelopment, gulp.dest(path.build.sounds), gulp.dest(path.production.sounds)))
-		.pipe(bs.stream());
-});
-
-// Создаем задание собрать HTML из PUG
-gulp.task("html:build:pug", function () {
-	return gulp.src(path.src.htmlpug)
-		.pipe(plumber())
-		.pipe(pug({
-			pretty: true
-		}))
 		.pipe(gulpIf(isDevelopment, gulp.dest(path.build.html), gulp.dest(path.production.html)))
 		.pipe(bs.stream());
 });
@@ -110,6 +96,9 @@ gulp.task("html:build:pug", function () {
 gulp.task("html:build", function () {
 	return gulp.src(path.src.html)
 		.pipe(plumber())
+		.pipe(pug({
+			pretty: true
+		}))
 		.pipe(gulpIf(isDevelopment, gulp.dest(path.build.html), gulp.dest(path.production.html)))
 		.pipe(bs.stream());
 });
@@ -120,6 +109,7 @@ gulp.task("js:build", function () {
 		.pipe(plumber())
 		.pipe(rigger())
 		.pipe(gulpIf(isDevelopment, sourcemaps.init()))
+		.pipe(gulpIf(!isDevelopment, babel({presets: ["env"]})))
 		.pipe(gulpIf(!isDevelopment, uglify()))
 		.pipe(gulpIf(isDevelopment, sourcemaps.write()))
 		.pipe(gulpIf(isDevelopment, gulp.dest(path.build.js), gulp.dest(path.production.js)))

@@ -1,0 +1,21 @@
+doctype html
+html(lang="en")
+	head
+		include templates/head
+	body
+		.timer
+			.timer-controls
+				.inputs
+					.tooltip
+						input(type="number", name="work", value="25", min="0", placeholder="work")
+						span.tooltiptext Session Length
+					.tooltip
+						input(type="number", name="rest", value="5", min="0", placeholder="rest")
+						span.tooltiptext Break Length
+			.display
+				h1.display-time-left
+				p.display-end-time
+			.buttons
+				button(name="start-timer") Start
+				button(name="pause-timer") Pause
+		include templates/scripts
