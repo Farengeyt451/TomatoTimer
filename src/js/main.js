@@ -1,8 +1,12 @@
 // Basic timers
 let countdownWork;
 let countdownRest;
+
 // Flag for pause timers
 let pause = false;
+
+// Flag for mute sounds
+let muted = false;
 
 // Elements
 const timerDisplay = document.querySelector(".display-time-left");
@@ -12,6 +16,7 @@ const pauseTimeBtn = document.querySelector("button[name='pause-timer']");
 const inputWorkTime = document.querySelector("input[name='work']");
 const inputRestTime = document.querySelector("input[name='rest']");
 const body = document.querySelector("body");
+const volume = document.querySelector(".volume-control");
 
 // Audio files
 const audioWorkTimer = new Audio("../sounds/audio-1.wav");
@@ -101,6 +106,14 @@ function applyStyle(timer) {
 	}
 }
 
+function toggleSound() {
+	muted = !muted;
+	volume.classList.toggle("icon-volume-on");
+	volume.classList.toggle("icon-volume-off");
+	audioWorkTimer.muted = muted;
+	audioRestTimer.muted = muted;
+}
+
 workTimeBtn.addEventListener("click", () => {
 	if (inputWorkTime.value !== "0" || inputRestTime.value !== "0") {
 		timerWorkTime();
@@ -109,6 +122,6 @@ workTimeBtn.addEventListener("click", () => {
 	}
 });
 
-pauseTimeBtn.addEventListener("click", () => {
-	pauseTimers();
-});
+pauseTimeBtn.addEventListener("click", pauseTimers);
+
+volume.addEventListener("click", toggleSound);
