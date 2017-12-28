@@ -19,8 +19,8 @@ const body = document.querySelector("body");
 const volume = document.querySelector(".volume-control");
 
 // Audio files
-const audioWorkTimer = new Audio("../sounds/audio-1.wav");
-const audioRestTimer = new Audio("../sounds/audio-2.wav");
+const audioWorkTimer = new Audio("sounds/audio-1.wav");
+const audioRestTimer = new Audio("sounds/audio-2.wav");
 
 // Start session length timer
 function timerWorkTime() {

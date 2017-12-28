@@ -1,7 +1,7 @@
 {
-  "name": "Calculator",
+  "name": "TomatoTimer",
   "version": "1.0.0",
-  "description": "Calculator",
+  "description": "Tomato Timer",
   "main": "index.js",
   "author": "Alexander Kislov",
   "license": "ISC",
